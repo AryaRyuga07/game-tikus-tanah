@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Sederhana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clifford: '#da373d',
+                    },
+                    keyframes: {
+                        play: {
+                            '0%': { transform: 'scale(0.5)' },
+                            '100%': { transform: 'scale(1)' },
+                        },
+                    },
+                    animation: {
+                        'play-bounce': 'play 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) infinite alternate-reverse both',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+          .button-action {
+            @apply w-20 h-20 font-bold text-3xl shadow-sm shadow-black transition duration-500 ease-out hover:shadow-lg hover:shadow-black hover:cursor-pointer;
+          }
+
+          .hammer {
+            cursor: url(img/palu1.png), auto;
+          }
+
+          .hammer:active {
+              cursor: url(img/palu2.png), auto;
+          }
+
+          .dirt {
+            @apply w-40 h-32 relative overflow-hidden;
+          }
+
+          .dirt::after {
+            @apply content-[''] block w-40 h-20 absolute;
+            background: url(img/tanah.png) bottom center no-repeat;
+            background-size: 80%;
+            bottom: -5px;
+          }
+
+          .rat {
+            @apply w-full h-full absolute top-48;
+            background: url(img/tikus.png) bottom center no-repeat;
+            background-size: 60%;
+            transition: top 0.3s;
+          }
+
+          .dirt.up .rat {
+            @apply -top-8;
+          }
+        }
+      </style>
+</head>
+
+<body>
+    <div class="w-screen h-auto bg-slate-200 flex lg:justify-between sm:justify-center items-start">
+        <div
+            class="bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-purple-200 via-purple-400 to-purple-800 button-action rounded-br-full pl-4 pt-4 lg:flex sm:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-8 h-8">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5" />
+            </svg>
+        </div>
+        <div
+            class="w-[80vw] h-screen bg-gradient-to-t from-purple-300 via-purple-400 to-purple-800 sm:max-h-auto sm:p-4 shadow-xl shadow-black">
+            <h1 class="w-max text-5xl font-bold mt-7 mx-auto text-white">Play and Hit Me</h1>
+            <div class="hidden w-screen h-screen fixed z-40 bg-black opacity-70 top-0 bottom-0 left-0 right-0 justify-center items-center"
+                id="timerBg">
+                <p class="text-9xl font-bold fixed z-50 text-white" id="timer">3</p>
+            </div>
+            <div class="flex justify-center mt-24 sm:mb-72 lg:mb-0" id="play">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-96 h-96 text-slate-200 hover:cursor-pointer hover:text-slate-500 transition duration-300 animate-play-bounce">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
+                </svg>
+            </div>
+            <div class="hidden" id="games">
+                <div class="w-full mx-auto px-4 mt-12">
+                    <h2 id="time" class="mx-5 py-2 bg-white rounded-lg text-lg font-bold flex justify-center">
+                        00:01:00
+                    </h2>
+                </div>
+                <div class="fixed left-5 top-auto w-20 h-20 bg-purple-600 rounded-full flex justify-center items-center text-white font-bold text-xl"
+                    id="scoreBoard">0</div>
+                <div class="w-[75vw] lg:h-[65vh] bg-white sm:max-h-screen mt-10 mx-auto rounded-lg">
+                    <div class="w-fill h-full p-5 flex flex-wrap justify-center items-center hammer">
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                        <div class="dirt">
+                            <div class="rat"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="totalScore" class="fixed h-screen w-screen bg-black opacity-70 z-40 hidden justify-center">
+            <div class="w-96 h-20 text-white text-5xl font-bold fixed z-50 top-40">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-20 h-20 mx-auto">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+                </svg>
+                <div>
+                    <p>Congratulation!!!</p>
+                    <p>Your Score : <span id="total">100</span></p>
+                </div>
+                <div class="hover:text-slate-500 cursor-pointer" id="restart">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-32 h-32 mx-auto mt-16 transition duration-300 animate-play-bounce">
+                        <path fill-rule="evenodd"
+                            d="M12 5.25c1.213 0 2.415.046 3.605.135a3.256 3.256 0 013.01 3.01c.044.583.077 1.17.1 1.759L17.03 8.47a.75.75 0 10-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 00-1.06-1.06l-1.752 1.751c-.023-.65-.06-1.296-.108-1.939a4.756 4.756 0 00-4.392-4.392 49.422 49.422 0 00-7.436 0A4.756 4.756 0 003.89 8.282c-.017.224-.033.447-.046.672a.75.75 0 101.497.092c.013-.217.028-.434.044-.651a3.256 3.256 0 013.01-3.01c1.19-.09 2.392-.135 3.605-.135zm-6.97 6.22a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.752-1.751c.023.65.06 1.296.108 1.939a4.756 4.756 0 004.392 4.392 49.413 49.413 0 007.436 0 4.756 4.756 0 004.392-4.392c.017-.223.032-.447.046-.672a.75.75 0 00-1.497-.092c-.013.217-.028.434-.044.651a3.256 3.256 0 01-3.01 3.01 47.953 47.953 0 01-7.21 0 3.256 3.256 0 01-3.01-3.01 47.759 47.759 0 01-.1-1.759L6.97 15.53a.75.75 0 001.06-1.06l-3-3z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <p class="text-center transition duration-300 animate-play-bounce">restart</p>
+                </div>
+            </div>
+        </div>
+        <div
+            class="bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-purple-200 via-purple-400 to-purple-800 button-action rounded-bl-full pl-9 pt-4 sm:hidden lg:flex">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-8 h-8 font-bold">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+            </svg>
+
+        </div>
+    </div>
+
+    <audio src="audio/Pop.mp3" id="pop"></audio>
+    <script src="js/function.js"></script>
+</body>
+
+</html>
